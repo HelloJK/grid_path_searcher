@@ -61,6 +61,8 @@ void rcvWaypointsCallback(const nav_msgs::Path & wp)
                  wp.poses[0].pose.position.z;
 
     ROS_INFO("[node] receive the planning target");
+    ROS_INFO("[node] start: %lf %lf %lf", _start_pt(0), _start_pt(1), _start_pt(2));
+    ROS_INFO("[node] end: %lf %lf %lf", target_pt(0), target_pt(1), target_pt(2));
     pathFinding(_start_pt, target_pt); 
 }
 
@@ -107,19 +109,78 @@ void rcvPointCloudCallBack(const sensor_msgs::PointCloud2 & pointcloud_map)
 
 void pathFinding(const Vector3d start_pt, const Vector3d target_pt)
 {
-    //Call A* to search for a path
-    _astar_path_finder->AstarGraphSearch(start_pt, target_pt);
+    {
+      ROS_INFO("[node] ==========================Euclidean");
+      //Call A* to search for a path
+      _astar_path_finder->setHeutype(0);
+      _astar_path_finder->AstarGraphSearch(start_pt, target_pt);
 
-    //Retrieve the path
-    auto grid_path     = _astar_path_finder->getPath();
-    auto visited_nodes = _astar_path_finder->getVisitedNodes();
+      //Retrieve the path
+      auto grid_path     = _astar_path_finder->getPath();
+      auto visited_nodes = _astar_path_finder->getVisitedNodes();
 
-    //Visualize the result
-    visGridPath (grid_path, false);
-    visVisitedNode(visited_nodes);
+      //Visualize the result
+      visGridPath (grid_path, false);
+      visVisitedNode(visited_nodes);
 
-    //Reset map for next call
-    _astar_path_finder->resetUsedGrids();
+      //Reset map for next call
+      _astar_path_finder->resetUsedGrids();
+      ros::Duration(3.0).sleep();
+    }
+
+    {
+      ROS_INFO("[node] ==========================manhattan");
+      //Call A* to search for a path
+      _astar_path_finder->setHeutype(1);
+      _astar_path_finder->AstarGraphSearch(start_pt, target_pt);
+
+      //Retrieve the path
+      auto grid_path     = _astar_path_finder->getPath();
+      auto visited_nodes = _astar_path_finder->getVisitedNodes();
+
+      //Visualize the result
+      visGridPath (grid_path, false);
+      visVisitedNode(visited_nodes);
+
+      //Reset map for next call
+      _astar_path_finder->resetUsedGrids();
+    }
+
+    {
+      ROS_INFO("[node] ==========================Diagonal");
+      //Call A* to search for a path
+      _astar_path_finder->setHeutype(2);
+      _astar_path_finder->AstarGraphSearch(start_pt, target_pt);
+
+      //Retrieve the path
+      auto grid_path     = _astar_path_finder->getPath();
+      auto visited_nodes = _astar_path_finder->getVisitedNodes();
+
+      //Visualize the result
+      visGridPath (grid_path, false);
+      visVisitedNode(visited_nodes);
+
+      //Reset map for next call
+      _astar_path_finder->resetUsedGrids();
+    }
+
+    {
+      ROS_INFO("[node] ==========================dijkstra");
+      //Call A* to search for a path
+      _astar_path_finder->setHeutype(3);
+      _astar_path_finder->AstarGraphSearch(start_pt, target_pt);
+
+      //Retrieve the path
+      auto grid_path     = _astar_path_finder->getPath();
+      auto visited_nodes = _astar_path_finder->getVisitedNodes();
+
+      //Visualize the result
+      visGridPath (grid_path, false);
+      visVisitedNode(visited_nodes);
+
+      //Reset map for next call
+      _astar_path_finder->resetUsedGrids();
+    }
 
     //_use_jps = 0 -> Do not use JPS
     //_use_jps = 1 -> Use JPS
@@ -175,6 +236,7 @@ int main(int argc, char** argv)
     _max_x_id = (int)(_x_size * _inv_resolution);
     _max_y_id = (int)(_y_size * _inv_resolution);
     _max_z_id = (int)(_z_size * _inv_resolution);
+    ROS_INFO("[node] size: %d %d %d", _max_x_id, _max_y_id, _max_z_id);
 
     _astar_path_finder  = new AstarPathFinder();
     _astar_path_finder  -> initGridMap(_resolution, _map_lower, _map_upper, _max_x_id, _max_y_id, _max_z_id);
@@ -207,7 +269,7 @@ void visGridPath( vector<Vector3d> nodes, bool is_use_jps )
     else
         node_vis.ns = "demo_node/astar_path";
 
-    node_vis.type = visualization_msgs::Marker::CUBE_LIST;
+    node_vis.type = visualization_msgs::Marker::SPHERE_LIST;
     node_vis.action = visualization_msgs::Marker::ADD;
     node_vis.id = 0;
 
