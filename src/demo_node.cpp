@@ -48,7 +48,7 @@ void rcvPointCloudCallBack(const sensor_msgs::PointCloud2 & pointcloud_map);
 
 void visGridPath( vector<Vector3d> nodes, bool is_use_jps );
 void visVisitedNode( vector<Vector3d> nodes );
-void pathFinding(const Vector3d start_pt, const Vector3d target_pt);
+void AstarPathFinding(const Vector3d start_pt, const Vector3d target_pt);
 
 void rcvWaypointsCallback(const nav_msgs::Path & wp)
 {     
@@ -63,7 +63,7 @@ void rcvWaypointsCallback(const nav_msgs::Path & wp)
     ROS_INFO("[node] receive the planning target");
     ROS_INFO("[node] start: %lf %lf %lf", _start_pt(0), _start_pt(1), _start_pt(2));
     ROS_INFO("[node] end: %lf %lf %lf", target_pt(0), target_pt(1), target_pt(2));
-    pathFinding(_start_pt, target_pt); 
+    AstarPathFinding(_start_pt, target_pt); 
 }
 
 void rcvPointCloudCallBack(const sensor_msgs::PointCloud2 & pointcloud_map)
@@ -107,7 +107,7 @@ void rcvPointCloudCallBack(const sensor_msgs::PointCloud2 & pointcloud_map)
     _has_map = true;
 }
 
-void pathFinding(const Vector3d start_pt, const Vector3d target_pt)
+void AstarPathFinding(const Vector3d start_pt, const Vector3d target_pt)
 {
     {
       ROS_INFO("[node] ==========================Euclidean");
