@@ -35,7 +35,7 @@ set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} -O3 -Wall") # -Wextra -Werror
 
 add_executable( demo_node 
     src/demo_node.cpp
-    src/Astar_searcher.cpp
+    src/Astar_search/Astar_searcher.cpp
     src/jps_search/JPS_utils.cpp
     src/jps_search/JPS_searcher.cpp
     )
