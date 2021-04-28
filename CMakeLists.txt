@@ -10,7 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 find_package(Eigen3 REQUIRED)
 find_package(PCL REQUIRED)
-find_package(OMPL REQUIRED)
+#find_package(OMPL REQUIRED)
 
 set(Eigen3_INCLUDE_DIRS ${EIGEN3_INCLUDE_DIR})
 
@@ -26,7 +26,7 @@ include_directories(
     ${catkin_INCLUDE_DIRS} 
     ${Eigen3_INCLUDE_DIRS} 
     ${PCL_INCLUDE_DIRS}
-    ${OMPL_INCLUDE_DIRS}
+    # ${OMPL_INCLUDE_DIRS}
 )
 
 link_libraries(${OMPL_LIBRARY_DIRS})
@@ -52,11 +52,11 @@ target_link_libraries( random_complex
     ${catkin_LIBRARIES}
     ${PCL_LIBRARIES} )  
 
-add_executable (ompl_rrt
-    src/ompl_rrt_node.cpp
-    src/ompl_rrt/ompl_rrt_searcher.cpp)
+#add_executable (ompl_rrt
+#    src/ompl_rrt_node.cpp
+#    src/ompl_rrt/ompl_rrt_searcher.cpp)
 
-target_link_libraries(ompl_rrt
-   ${catkin_LIBRARIES}
-   ${PCL_LIBRARIES}
-   ${OMPL_LIBRARIES} )
+#target_link_libraries(ompl_rrt
+#   ${catkin_LIBRARIES}
+#   ${PCL_LIBRARIES}
+#   ${OMPL_LIBRARIES} )
