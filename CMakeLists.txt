@@ -21,6 +21,7 @@ catkin_package(
 include_directories(
     include 
     include/ompl_rrt/
+    include/obvp_traj/
     SYSTEM 
     third_party
     ${catkin_INCLUDE_DIRS} 
@@ -38,6 +39,7 @@ add_executable( demo_node
     src/Astar_search/Astar_searcher.cpp
     src/jps_search/JPS_utils.cpp
     src/jps_search/JPS_searcher.cpp
+    src/obvp_traj/obvp_tool.cpp
     )
 
 target_link_libraries(demo_node 
