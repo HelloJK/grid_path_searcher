@@ -10,6 +10,8 @@
 #include "math.h"
 #include "State.h"
 
+// ref: https://www.yuque.com/kejun-h6ksy/ffyw94/kgp0mk/edit#O1UdO
+
 namespace obvp {
 
 class OBVPtool
